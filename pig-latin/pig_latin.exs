@@ -18,41 +18,35 @@ defmodule PigLatin do
   """
   @spec translate(phrase :: String.t()) :: String.t()
   def translate(phrase) do
-
     # phrase_analysis = %{ "phrase" => phrase, "vowel" => begins_with_vowel?(phrase), "vowel_exception" => vowel_exception?(phrase)}
     # route_word(phrase_analysis)
-
-    # assuming the phrase is just one word...
     translate_word(phrase)
 
     # treat_as_vowel?(phrase)
-
   end
 
   defp translate_word(word) do
     if apply_vowel_translation do
-        translates_vowels(word)
-    else do
-
+      translates_vowels(word)
     end
   end
 
   defp apply_vowel_translation(word) do
-    (Enum.member?(@vowels, String.first(word)) || Enum.member?(@vowel_exceptions, String.slice(word,0..1)))
+    Enum.member?(@vowels, String.first(word)) ||
+      Enum.member?(@vowel_exceptions, String.slice(word, 0..1))
   end
 
   defp begins_with_vowel?(word), do: Enum.member?(@vowels, String.first(word))
 
-  defp vowel_exception?(word), do: Enum.member?(@vowel_exceptions, String.slice(word,0..1))
+  defp vowel_exception?(word), do: Enum.member?(@vowel_exceptions, String.slice(word, 0..1))
 
-  defp route_word(%{ "vowel" => true } = phrase_analysis) do
+  defp route_word(%{"vowel" => true} = phrase_analysis) do
     translates_vowels(phrase_analysis["phrase"])
   end
 
-  defp route_word(%{ "vowel_exception" => true } = phrase_analysis) do
+  defp route_word(%{"vowel_exception" => true} = phrase_analysis) do
     translates_vowels(phrase_analysis["phrase"])
   end
-
 
   defp translates_vowels(word) do
     String.replace_suffix(word, "", "ay")
@@ -67,9 +61,4 @@ defmodule PigLatin do
   #   #   _ -> "final"
   #   # end
   # end
-
-
-
-
-
 end
