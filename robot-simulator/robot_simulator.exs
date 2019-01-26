@@ -13,17 +13,14 @@ defmodule RobotSimulator do
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
   @spec create(direction :: atom, position :: {integer, integer}) :: any
-  def create(direction \\ nil, position \\ nil) do
-    robot =
-      case {direction, position} do
-        {nil, nil} ->
-          %{"direction" => :north, "position" => {0, 0}}
+  def create() do
+    %{"direction" => :north, "position" => {0, 0}}
+  end
 
-        {_, _} ->
-          %{"direction" => direction, "position" => position}
-      end
-
-    robot |> check_valid_direction() |> check_valid_position()
+  def create(direction, position) do
+    %{"direction" => direction, "position" => position}
+    |> check_valid_direction()
+    |> check_valid_position()
   end
 
   defp check_valid_direction(robot) do
@@ -91,12 +88,12 @@ defmodule RobotSimulator do
     end
   end
 
-  def move(robot, ?A) do
+  def move(%{"position" => {x, y}} = robot, ?A) do
     case robot["direction"] do
-      :north -> Map.update(robot, "position", {0, 0}, fn {x, y} -> {x, y + 1} end)
-      :east -> Map.update(robot, "position", {0, 0}, fn {x, y} -> {x + 1, y} end)
-      :south -> Map.update(robot, "position", {0, 0}, fn {x, y} -> {x, y - 1} end)
-      :west -> Map.update(robot, "position", {0, 0}, fn {x, y} -> {x - 1, y} end)
+      :north -> %{robot | "position" => {x, y + 1}}
+      :east -> %{robot | "position" => {x + 1, y}}
+      :south -> %{robot | "position" => {x, y - 1}}
+      :west -> %{robot | "position" => {x - 1, y}}
     end
   end
 
