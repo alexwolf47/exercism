@@ -38,6 +38,7 @@ defmodule RobotSimulator do
   defp check_valid_position(robot) do
     position = robot["position"]
 
+    # Checks that position is a valid tuple of two coordinates, both integers
     if is_tuple(position) && tuple_size(position) == 2 && is_integer(elem(position, 0)) &&
          is_integer(elem(position, 1)) do
       robot
